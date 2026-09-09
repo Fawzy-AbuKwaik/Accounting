@@ -3,8 +3,6 @@ from dotenv import load_dotenv # for .env file (where we store our API key), we 
 from openai import OpenAI # We're going to use it to communicate with the OpenAI API.
 import base64 # Base64 converts binary data into text characters (encoding)
 import os # os gives Python access to operating-system-related functionality
-import json # for working with JSON data
-from openpyxl import Workbook, load_workbook # for working with Excel files
 
 load_dotenv() # as loading the variables
 # os.getenv("OPENAI_API_KEY") to get the value of the variable OPENAI_API_KEY from the .env file (loading)
@@ -60,20 +58,4 @@ with open(image_path, "rb") as image_file: # open the image file in binary mode
             }
         ]
     )
-    data = json.loads(response.output_text) # convert the response to a Python dictionary
-    print(data["name"])
-    print(data["business_number"])
-    print(data["invoice_number"])
-    
-    excel_path = Path("output/invoices.xlsx") # check if the Excel file already exists
-    if excel_path.exists():
-        workbook = load_workbook(excel_path) # load the existing Excel workbook
-        sheet = workbook.active # get the active sheet
-        
-    else:
-        workbook = Workbook() # create a new Excel workbook
-        sheet = workbook.active # get the active sheet
-        sheet.append(["Name", "Business Number", "Invoice Number"]) # add the header row
-    sheet.append([data["name"], data["business_number"], data["invoice_number"]]) # add the extracted data to the sheet
-    workbook.save(excel_path) # save the workbook to a file
-    print("Data saved to output/invoices.xlsx")
+    print(response.output_text)
