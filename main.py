@@ -34,6 +34,8 @@ with open(image_path, "rb") as image_file: # open the image file in binary mode
                         - name
                         - business_number
                         - invoice_number
+                        - total
+                        - date
                         
                         IMPORTANT INVOICE NUMBER RULE:
                         The invoice number may consist of a letter and a number.
@@ -47,7 +49,9 @@ with open(image_path, "rb") as image_file: # open the image file in binary mode
                         {
                             "name": "",
                             "business_number": "",
-                            "invoice_number": ""
+                            "invoice_number": "",
+                            "total": "",
+                            "date": ""
                         }
                         If a value is unclear, return null.
                         """
@@ -64,7 +68,8 @@ with open(image_path, "rb") as image_file: # open the image file in binary mode
     print(data["name"])
     print(data["business_number"])
     print(data["invoice_number"])
-    
+    print(data["total"])
+    print(data["date"])
     excel_path = Path("output/invoices.xlsx") # check if the Excel file already exists
     if excel_path.exists():
         workbook = load_workbook(excel_path) # load the existing Excel workbook
@@ -73,7 +78,7 @@ with open(image_path, "rb") as image_file: # open the image file in binary mode
     else:
         workbook = Workbook() # create a new Excel workbook
         sheet = workbook.active # get the active sheet
-        sheet.append(["Name", "Business Number", "Invoice Number"]) # add the header row
-    sheet.append([data["name"], data["business_number"], data["invoice_number"]]) # add the extracted data to the sheet
+        sheet.append(["Name", "Business Number", "Invoice Number", "Total", "Date"]) # add the header row
+    sheet.append([data["name"], data["business_number"], data["invoice_number"], data["total"], data["date"]]) # add the extracted data to the sheet
     workbook.save(excel_path) # save the workbook to a file
     print("Data saved to output/invoices.xlsx")
