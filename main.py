@@ -10,12 +10,16 @@ load_dotenv() # as loading the variables
 # os.getenv("OPENAI_API_KEY") to get the value of the variable OPENAI_API_KEY from the .env file (loading)
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY")) # which creates an object that knows how to communicate with the API
 
-image_path = Path("invoices/صيدلية البهاء.jpeg") # select image
+image_input = input("Enter invoice image path: ")
+
+
+image_path = Path(image_input) # select image
 if image_path.exists():
     print("Invoice found")
     print("path:", image_path)
 else:
     print("Invoice not found")
+    exit(1) # exit the program with an error code
     
 with open(image_path, "rb") as image_file: # open the image file in binary mode
     # image_file.read()Reads all the image bytes
